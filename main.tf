@@ -35,6 +35,20 @@ resource "google_compute_instance" "non_gpu" {
       // Ephemeral IP
     }
   }
+  
+  provisioner "local-exec" {
+    command = <<EOF
+      echo "[tf_gcp_demo]" > inventory
+      echo "${google_compute_instance.non_gpu.public_ip} ansible_ssh_user=ubuntu ansible_ssh_private_key_file=~/.ssh/your_private_key.pem" >> inventory
+      EOF
+  }
+
+  provisioner "local-exec" {
+    command = <<EOF
+      ANSIBLE_HOST_KEY_CHECKING=False \
+      ansible-playbook -i inventory playbook.yml
+      EOF
+  }
 
 }
 
@@ -63,6 +77,19 @@ resource "google_compute_instance" "gpu" {
     }
   }
 
+  provisioner "local-exec" {
+    command = <<EOF
+      echo "[tf_gcp_demo]" > inventory
+      echo "${google_compute_instance.non_gpu.public_ip} ansible_ssh_user=ubuntu ansible_ssh_private_key_file=~/.ssh/your_private_key.pem" >> inventory
+      EOF
+  }
+
+  provisioner "local-exec" {
+    command = <<EOF
+      ANSIBLE_HOST_KEY_CHECKING=False \
+      ansible-playbook -i inventory playbook.yml
+      EOF
+  }
 
 
  dynamic "guest_accelerator" {
