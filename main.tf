@@ -27,6 +27,7 @@ resource "google_compute_instance" "non_gpu" {
     }
   }
 
+  project = "hc-b5b4e4d4be424e76b95a4ca15a3"
 
   network_interface {
     network = "default"
