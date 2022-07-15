@@ -35,6 +35,15 @@ resource "google_compute_instance" "non_gpu" {
       // Ephemeral IP
     }
   }
+  
+  // install python on target gcp VM for Ansible
+  connection {
+    user = "ubuntu"
+    type = "ssh"
+
+    private_key = "${file("~/.ssh/your_private_key.pem")}"
+    timeout     = "2m"
+  }
 
 }
 
@@ -61,6 +70,22 @@ resource "google_compute_instance" "gpu" {
     access_config {
       // Ephemeral IP
     }
+  }
+  
+  // install python on target gcp VM for Ansible
+  connection {
+    user = "ubuntu"
+    type = "ssh"
+
+    private_key = "${file("~/.ssh/your_private_key.pem")}"
+    timeout     = "2m"
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "sudo apt-get update",
+      "sudo apt-get install -y python",
+    ]
   }
 
 
