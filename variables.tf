@@ -24,7 +24,7 @@ variable "gcp_zone" {
 variable "machine_type" {
   description = "GCP machine type"
    validation {
-     condition     = contains(["n1-highmem-8", "e2-standard-4"], var.machine_type)
+     condition     = contains(["n1-standard-2", "n1-standard-4"], var.machine_type)
      error_message = "Error : \n 지원되지 않는 가상 머신 타입입니다."
   
    }
