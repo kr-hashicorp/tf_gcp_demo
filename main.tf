@@ -73,27 +73,5 @@ resource "google_compute_instance" "gpu" {
   }
   //metadata_startup_script = "echo hi > /test.txt"
 }
-    
-resource "null_resource" "package_install" {
-    triggers = {
-      build_time = timestamp()
-    }
    
-    connection {
-      host = google_compute_instance.non_gpu[0].network_interface.0.access_config.0.nat_ip
-      user = var.ssh_user
-      type = "ssh"
-
-      private_key = "${file("~/.ssh/your_private_key.pem")}"
-      timeout     = "2m"
-    }
-  
-    // 추가 패키지 설치 필요 시, 아래 구문 참조하여 추가
-    provisioner "remote-exec" {
-      inline = [
-        "sudo apt-get update",
-        "sudo apt-get install -y python",
-      ]
-    }
-}
        
