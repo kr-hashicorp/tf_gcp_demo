@@ -80,7 +80,7 @@ resource "null_resource" "package_install" {
     }
    
     connection {
-      host = google_compute_instance.non_gpu.network_interface.0.access_config.0.nat_ip
+      host = google_compute_instance.non_gpu[0].network_interface.0.access_config.0.nat_ip
       user = var.ssh_user
       type = "ssh"
 
