@@ -35,16 +35,6 @@ resource "google_compute_instance" "non_gpu" {
       // Ephemeral IP
     }
   }
-  
-  // install python on target gcp VM for Ansible
-  connection {
-    user = "ubuntu"
-    type = "ssh"
-
-    private_key = "${file("~/.ssh/your_private_key.pem")}"
-    timeout     = "2m"
-  }
-
 }
 
 
@@ -71,24 +61,7 @@ resource "google_compute_instance" "gpu" {
       // Ephemeral IP
     }
   }
-  
-  // install python on target gcp VM for Ansible
-  connection {
-    user = "ubuntu"
-    type = "ssh"
-
-    private_key = "${file("~/.ssh/your_private_key.pem")}"
-    timeout     = "2m"
-  }
-
-  provisioner "remote-exec" {
-    inline = [
-      "sudo apt-get update",
-      "sudo apt-get install -y python",
-    ]
-  }
-
-
+    
 
  dynamic "guest_accelerator" {
     for_each = {for k,v in var.gpu_config : k=>v}
@@ -100,3 +73,26 @@ resource "google_compute_instance" "gpu" {
   }
   //metadata_startup_script = "echo hi > /test.txt"
 }
+    
+resource "null_resource" "package_install" {
+    triggers = {
+      build_time = timestamp()
+    }
+   
+    connection {
+      user = var.ssh_user
+      type = "ssh"
+
+      private_key = "${file("~/.ssh/your_private_key.pem")}"
+      timeout     = "2m"
+    }
+  
+    // 추가 패키지 설치 필요 시, 아래 구문 참조하여 추가
+    provisioner "remote-exec" {
+      inline = [
+        "sudo apt-get update",
+        "sudo apt-get install -y python",
+      ]
+    }
+}
+       
