@@ -55,8 +55,3 @@ variable "gpu_use" {
  type = bool
 }
 
-variable "ssh_user" {
-  description = "account info for ssh connection"
-  type = string
-}
-
