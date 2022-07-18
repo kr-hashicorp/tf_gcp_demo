@@ -10,8 +10,8 @@ variable "gcp_region" {
   description = "GCP region, e.g. us-east1"
   #default     = "asia-northeast3"
   validation {
-    condition     = contains(["asia-northeast3", "Asia-NorthEast3"], var.gcp_region)
-    error_message = "Error : \n 지원되지 않는 배포 지역입니다. \n 다음 배포 지역(Region)만 사용 가능합니다. \n \t - 한국 : asia-northeast3  \n ."
+    condition     = contains(["asia-northeast3", "Asia-NorthEast3", "us-central1"], var.gcp_region)
+    error_message = "Error : \n You entered an unsuported region \n ."
 
   }
 }
@@ -24,8 +24,8 @@ variable "gcp_zone" {
 variable "machine_type" {
   description = "GCP machine type"
    validation {
-     condition     = contains(["n1-standard-2", "n1-standard-4"], var.machine_type)
-     error_message = "Error : \n 지원되지 않는 가상 머신 타입입니다."
+     condition     = contains(["n1-standard-2", "n1-standard-4", "e2-micro"], var.machine_type)
+     error_message = "Error : \n You entered an unsupported machine type"
   
    }
 }
